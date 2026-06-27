@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: colorado
+    description: "Raw Colorado business entity records landed from the Socrata Open Data API."
+    schema: public
+    tables:
+      - name: raw_co_business_entities
+        description: "One row per API record; full record stored as JSONB in the data column."
