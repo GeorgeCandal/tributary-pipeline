@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_co_business_entities
+    description: "Cleaned and renamed Colorado business entities, one row per entity."
+    columns:
+      - name: entity_id
+        description: "Unique Colorado business entity identifier."
+        tests:
+          - unique
+          - not_null
+
+      - name: entity_status
+        description: "Current standing of the entity."
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - "Good Standing"
+                  - "Delinquent"
+                  - "Administratively Dissolved"
+                  - "Voluntarily Dissolved"
+                  - "Exists"
+                  - "Revoked"
+                  - "Merged"
+                  - "Withdrawn"
+                  - "Consolidated"
+                  - "Noncompliant"
+                  - "Dissolved (Term Expired)"
+                  - "Converted"
