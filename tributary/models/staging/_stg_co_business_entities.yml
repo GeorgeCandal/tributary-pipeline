@@ -28,3 +28,6 @@ models:
                   - "Noncompliant"
                   - "Dissolved (Term Expired)"
                   - "Converted"
+                  - "Judicially Dissolved"
+                  - "Registered Agent Resigned"
+                  - "Effectiveness Prevented"

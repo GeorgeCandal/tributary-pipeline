@@ -18,7 +18,7 @@ DB_CONFIG = {
 
 API_URL = "https://data.colorado.gov/resource/4ykn-tg5h.json"
 PAGE_SIZE = 1000          # records per API request (Socrata's max default)
-MAX_RECORDS = 3000        # cap for this run; set to None to load everything
+MAX_RECORDS = None        # cap for this run; set to None to load everything
 
 CREATE_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS raw_co_business_entities (
