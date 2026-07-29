@@ -109,6 +109,17 @@ CREATE TABLE IF NOT EXISTS raw_fl_business_entities (
 
 INSERT_SQL = "INSERT INTO raw_fl_business_entities (data) VALUES %s"
 
+def connect_sftp() -> tuple[paramiko.SFTPClient, paramiko.Transport]:
+    host = os.environ["SUNBIZ_HOST"]
+    user = os.environ["SUNBIZ_USER"]
+    password = os.environ["SUNBIZ_PASSWORD"]
+
+    transport = paramiko.Transport((host, 22))
+    transport.connect(username=user, password=password)
+    sftp = paramiko.SFTPClient.from_transport(transport)
+
+    return sftp, transport
+
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)
 
