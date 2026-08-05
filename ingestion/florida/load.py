@@ -4,6 +4,7 @@ import paramiko
 import psycopg2
 from psycopg2.extras import execute_values
 from dotenv import load_dotenv
+import tempfile
 
 load_dotenv()
 
@@ -119,6 +120,14 @@ def connect_sftp() -> tuple[paramiko.SFTPClient, paramiko.Transport]:
     sftp = paramiko.SFTPClient.from_transport(transport)
 
     return sftp, transport
+
+def download_file(sftp: paramiko.SFTPClient, remote_path: str) -> str:
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+    temp_path = temp_file.name
+    temp_file.close()
+    sftp.get(remote_path, temp_path)
+    return temp_path
+
 
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)
