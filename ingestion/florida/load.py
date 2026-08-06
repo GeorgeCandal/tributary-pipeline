@@ -139,7 +139,7 @@ def create_landing_table(conn):
 def parse_record(line: str) -> dict:
     record = {}
     for name, start, length in FIELDS:
-        record[name] = line[start-1 : start-1+length].strip()
+        record[name] = line[start-1 : start-1+length].replace("\x00", "").strip()
 
     return record
 
@@ -149,5 +149,27 @@ def insert_page(conn, records):
     with conn.cursor() as cur:
         execute_values(cur, INSERT_SQL, values)
 
+def load_florida(remote_path: str):
+    with get_connection() as conn:
+            create_landing_table(conn)
+
+            sftp, transport = connect_sftp()
+            temp_path = download_file(sftp, remote_path)
+            
+            with open(temp_path) as f:
+                batch = []
+                for line in f:
+                    record = parse_record(line)
+                    batch.append(record)
+                    if len(batch) == 1000:
+                        insert_page(conn, batch)
+                        batch = []
+                if batch:
+                    insert_page(conn, batch)
+
+            os.remove(temp_path)
+            sftp.close()
+            transport.close()
+
 if __name__ == "__main__":
-    pass
+    load_florida("doc/cor/20260728c.txt")
